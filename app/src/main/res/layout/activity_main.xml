@@ -55,16 +55,88 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
             <LinearLayout
+                android:id="@+id/llFromExchange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:padding="16dp"
                 android:background="@drawable/bg_rounded_content"
+                android:gravity="center"
                 android:orientation="horizontal"
+                android:padding="16dp"
+                android:weightSum="7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDescription">
 
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:minHeight="48dp"
+                    tools:text="R$ 1.000,00" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/img_divider" />
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:padding="8dp"
+                    tools:listitem="@layout/item_currency_type" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivArrowsExchange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_arrows_exchange"
+                app:layout_constraintBottom_toTopOf="@+id/llToExchange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llFromExchange" />
+
+            <LinearLayout
+                android:id="@+id/llToExchange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivArrowsExchange">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:minHeight="48dp"
+                    tools:text="R$ 1.000,00" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/img_divider" />
+
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:padding="8dp"
+                    tools:listitem="@layout/item_currency_type" />
 
             </LinearLayout>
 
