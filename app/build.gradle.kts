@@ -44,13 +44,17 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
-    //Ktor
+    // Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.kotlinx.serialization.json)
+
+    // Lifecycle
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.lifecycle.viewmodel)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
