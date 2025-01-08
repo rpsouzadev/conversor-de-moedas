@@ -85,10 +85,10 @@
                     android:src="@drawable/img_divider" />
 
                 <Spinner
+                    android:id="@+id/spnFromExchange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:paddingHorizontal="8dp"
                     tools:listitem="@layout/item_currency_type" />
             </LinearLayout>
 
@@ -134,10 +134,10 @@
                     android:src="@drawable/img_divider" />
 
                 <Spinner
+                    android:id="@+id/spnToExchange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:paddingHorizontal="8dp"
                     tools:listitem="@layout/item_currency_type" />
 
             </LinearLayout>

@@ -9,17 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.conversordemoedas.network.KtorHttpClient
+import com.example.conversordemoedas.databinding.ActivityMainBinding
+import com.example.conversordemoedas.ui.CurrencyTypesAdapter
 import com.example.conversordemoedas.viewmodel.CurrencyExchangeViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: CurrencyExchangeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -30,11 +33,8 @@ class MainActivity : AppCompatActivity() {
             launch {
                 viewModel.currencyTypes.collect { result ->
                     result.onSuccess { currencyTypes ->
-                        Toast.makeText(
-                            this@MainActivity,
-                            currencyTypes.size.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        binding.spnFromExchange.adapter = CurrencyTypesAdapter(currencyTypes)
+                        binding.spnToExchange.adapter = CurrencyTypesAdapter(currencyTypes)
                     }.onFailure {
                         Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
                     }
