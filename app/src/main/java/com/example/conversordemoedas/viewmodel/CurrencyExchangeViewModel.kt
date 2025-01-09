@@ -18,13 +18,28 @@ class CurrencyExchangeViewModel : ViewModel() {
     private val _exchangeRate = MutableStateFlow<Result<ExchangeRateResult?>>(Result.success(null))
     val exchangeRate: StateFlow<Result<ExchangeRateResult?>> = _exchangeRate.asStateFlow()
 
-    init {
+    fun requireCurrencyType(){
         viewModelScope.launch {
             _currencyTypes.value = KtorHttpClient.getCurrencyTypes().mapCatching { result ->
                 result.values
             }
+        }
+    }
 
-            _exchangeRate.value = KtorHttpClient.getExchangeRate(from = "USD", to = "BRL")
+    fun requireExchangeRate(from: CurrencyTypeAcronym, to: CurrencyTypeAcronym){
+        if(from == to) {
+            _exchangeRate.value = Result.success(
+                ExchangeRateResult(
+                    from = from,
+                    to = to,
+                    exchangeRate = 1.0
+                )
+            )
+            return
+        }
+
+        viewModelScope.launch {
+            _exchangeRate.value = KtorHttpClient.getExchangeRate(from = from, to = to)
         }
     }
 }
