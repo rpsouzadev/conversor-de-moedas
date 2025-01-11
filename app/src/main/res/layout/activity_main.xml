@@ -69,14 +69,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDescription">
 
-                <EditText
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:minHeight="48dp"
-                    tools:text="R$ 1.000,00" />
+                    android:layout_weight="4">
+
+                    <TextView
+                        android:id="@+id/tvFromCurrencySymbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textSize="16sp"
+                        tools:text="R$" />
+
+                    <EditText
+                        android:id="@+id/etFromExchange"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:inputType="number"
+                        android:minHeight="48dp"
+                        android:text="@string/initial_value" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -118,14 +132,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivArrowsExchange">
 
-                <EditText
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:minHeight="48dp"
-                    tools:text="R$ 1.000,00" />
+                    android:layout_weight="4">
+
+                    <TextView
+                        android:id="@+id/tvToCurrencySymbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textSize="16sp"
+                        tools:text="R$" />
+
+                    <EditText
+                        android:id="@+id/etToExchange"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:inputType="number"
+                        android:minHeight="48dp"
+                        android:text="@string/initial_value" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="wrap_content"
