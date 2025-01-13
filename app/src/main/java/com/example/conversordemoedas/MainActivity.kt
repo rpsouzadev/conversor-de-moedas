@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.conversordemoedas.databinding.ActivityMainBinding
+import com.example.conversordemoedas.databinding.ContentExchangeRateSuccessBinding
 import com.example.conversordemoedas.network.model.CurrencyType
 import com.example.conversordemoedas.ui.CurrencyTypesAdapter
 import com.example.conversordemoedas.viewmodel.CurrencyExchangeViewModel
@@ -43,16 +44,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.requireCurrencyType()
-        binding.etFromExchange.addCurrencyMask()
-        binding.etToExchange.addCurrencyMask()
+        binding.lExchangeRateSuccess.etFromExchange.addCurrencyMask()
+        binding.lExchangeRateSuccess.etToExchange.addCurrencyMask()
+
+        binding.lExchangeRateError.btnTryAgain.setOnClickListener {
+            binding.showContentLoading()
+            viewModel.requireCurrencyType()
+        }
 
         lifecycleScope.apply {
             launch {
                 viewModel.currencyTypes.collect { result ->
                     result.onSuccess { currencyTypes ->
-                        binding.configureSpinner(currencyTypes = currencyTypes)
+                        binding.showContentSuccess()
+                        binding.lExchangeRateSuccess.configureSpinner(currencyTypes = currencyTypes)
                     }.onFailure {
-                        Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
+                        binding.showContentError()
                     }
                 }
             }
@@ -61,18 +68,19 @@ class MainActivity : AppCompatActivity() {
                 viewModel.exchangeRate.collect { result ->
                     result.onSuccess { exchangeRateResult ->
                         exchangeRateResult?.let {
+                            binding.showContentSuccess()
                             exchangeRate = it.exchangeRate
-                            binding.generateConvertedValue()
+                            binding.lExchangeRateSuccess.generateConvertedValue()
                         }
                     }.onFailure {
-                        Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
+                        binding.showContentError()
                     }
                 }
             }
         }
     }
 
-    private fun ActivityMainBinding.configureSpinner(currencyTypes: List<CurrencyType>) {
+    private fun ContentExchangeRateSuccessBinding.configureSpinner(currencyTypes: List<CurrencyType>) {
         spnFromExchange.apply {
             adapter = CurrencyTypesAdapter(currencyTypes)
             onItemSelectedListener = object : OnItemSelectedListener {
@@ -151,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     setText(formattedValue)
                     setSelection(formattedValue.length)
 
-                    binding.generateConvertedValue()
+                    binding.lExchangeRateSuccess.generateConvertedValue()
 
                     addTextChangedListener(this)
                 }
@@ -160,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun ActivityMainBinding.generateConvertedValue() {
+    private fun ContentExchangeRateSuccessBinding.generateConvertedValue() {
         exchangeRate?.let { value ->
             val cleanedString = etFromExchange.text.toString().replace("[,.]".toRegex(), "")
             val currencyValue = cleanedString.toDoubleOrNull() ?: 0.0
@@ -174,4 +182,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun ActivityMainBinding.showContentError() {
+        pbLoading.visibility = View.GONE
+        lExchangeRateError.root.visibility = View.VISIBLE
+        lExchangeRateSuccess.root.visibility = View.GONE
+    }
+
+    private fun ActivityMainBinding.showContentSuccess() {
+        pbLoading.visibility = View.GONE
+        lExchangeRateError.root.visibility = View.GONE
+        lExchangeRateSuccess.root.visibility = View.VISIBLE
+    }
+
+    private fun ActivityMainBinding.showContentLoading() {
+        pbLoading.visibility = View.VISIBLE
+        lExchangeRateError.root.visibility = View.GONE
+        lExchangeRateSuccess.root.visibility = View.GONE
+    }
 }
