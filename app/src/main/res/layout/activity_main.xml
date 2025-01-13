@@ -152,6 +152,8 @@
                         android:background="@android:color/transparent"
                         android:inputType="number"
                         android:minHeight="48dp"
+                        android:enabled="false"
+                        android:textColor="@color/black"
                         android:text="@string/initial_value" />
                 </LinearLayout>
 
