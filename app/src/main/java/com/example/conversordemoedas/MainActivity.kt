@@ -19,8 +19,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.conversordemoedas.databinding.ActivityMainBinding
 import com.example.conversordemoedas.databinding.ContentExchangeRateSuccessBinding
 import com.example.conversordemoedas.network.model.CurrencyType
+import com.example.conversordemoedas.network.model.ExchangeRateResult
 import com.example.conversordemoedas.ui.CurrencyTypesAdapter
 import com.example.conversordemoedas.viewmodel.CurrencyExchangeViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -54,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.apply {
             launch {
-                viewModel.currencyTypes.collect { result ->
+                viewModel.currencyTypes.collectLatest { result ->
                     result.onSuccess { currencyTypes ->
                         binding.showContentSuccess()
                         binding.lExchangeRateSuccess.configureSpinner(currencyTypes = currencyTypes)
@@ -65,13 +68,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             launch {
-                viewModel.exchangeRate.collect { result ->
+                viewModel.exchangeRate.collectLatest { result ->
                     result.onSuccess { exchangeRateResult ->
-                        exchangeRateResult?.let {
-                            binding.showContentSuccess()
-                            exchangeRate = it.exchangeRate
-                            binding.lExchangeRateSuccess.generateConvertedValue()
-                        }
+                        if (exchangeRateResult == ExchangeRateResult.empty())
+                            return@collectLatest
+
+                        binding.showContentSuccess()
+                        exchangeRate = exchangeRateResult.exchangeRate
+                        binding.lExchangeRateSuccess.generateConvertedValue()
                     }.onFailure {
                         binding.showContentError()
                     }
